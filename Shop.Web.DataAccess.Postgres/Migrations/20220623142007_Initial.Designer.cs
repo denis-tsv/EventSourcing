@@ -12,7 +12,7 @@ using Shop.Web.DataAccess.Postgres;
 namespace Shop.Web.DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220623094950_Initial")]
+    [Migration("20220623142007_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,7 +81,8 @@ namespace Shop.Web.DataAccess.Postgres.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -115,11 +116,13 @@ namespace Shop.Web.DataAccess.Postgres.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 

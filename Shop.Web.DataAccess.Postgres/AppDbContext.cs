@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Web.DataAccess.Postgres.Configurations;
 using Shop.Web.Entities;
 using Shop.Web.Infrastructure.Interfaces;
 
@@ -20,6 +21,8 @@ public class AppDbContext : DbContext, IDbContext, IReadDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderConfiguration).Assembly);
+
         modelBuilder.Entity<Product>().HasData(
             new Product
             {
