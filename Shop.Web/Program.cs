@@ -1,4 +1,4 @@
-using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shop.Web.DataAccess.Postgres;
@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(s =>
+    {
+        s.RegisterValidatorsFromAssemblyContaining<CreateOrderDtoValidator>();
+    });
 builder.Services.AddRouting(x => x.LowercaseUrls = true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -20,10 +24,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(typeof(CreateOrderCommand));
 builder.Services.AddAutoMapper(typeof(OrderProfile));
-builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateOrderDtoValidator));
 
 builder.Services.AddDbContext<IDbContext, AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
-builder.Services.AddDbContext<IReadDbContext, AppDbContext>();
+builder.Services.AddDbContext<IReadDbContext, AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
 builder.Services.AddSingleton<ICurrentUserService, TestCurrentUserService>();
 
