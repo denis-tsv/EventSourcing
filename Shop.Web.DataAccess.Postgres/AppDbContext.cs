@@ -23,6 +23,14 @@ public class AppDbContext : DbContext, IDbContext, IReadDbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderConfiguration).Assembly);
 
+        modelBuilder.Entity<OrderItem>()
+            .HasIndex(x => new
+            {
+                x.ProductId,
+                x.OrderId
+            })
+            .IsUnique();
+
         modelBuilder.Entity<Product>().HasData(
             new Product
             {
