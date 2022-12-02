@@ -1,33 +1,41 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
+using Shop.Events.Orders;
 using Shop.Web.Entities;
 using Shop.Web.Infrastructure.Interfaces;
 
 namespace Shop.Web.UseCases.Orders.Commands.CreateOrder;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
+public class CreateOrderCommandHandler : OrderCommandHandler, IRequestHandler<CreateOrderCommand, Guid>
 {
-    private readonly IDbContext _dbContext;
+    private readonly IAggregateStore _aggregateStore;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IMapper _mapper;
 
-    public CreateOrderCommandHandler(IDbContext dbContext, ICurrentUserService currentUserService, IMapper mapper)
+    public CreateOrderCommandHandler(IAggregateStore aggregateStore, ICurrentUserService currentUserService, IReadDbContext dbContext) 
+        : base(dbContext)
     {
-        _dbContext = dbContext;
+        _aggregateStore = aggregateStore;
         _currentUserService = currentUserService;
-        _mapper = mapper;
     }
 
-    public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = _mapper.Map<Order>(request.Dto);
+        await EnsureProductsExistsAsync(request.Dto.Items.Select(x => x.ProductId).ToArray(), cancellationToken);
 
-        order.UserId = _currentUserService.Id;
-        order.CreatedAt = DateTime.UtcNow;
+        var order = new Order();
 
-        _dbContext.Orders.Add(order);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        order.Create(
+            Guid.NewGuid(),
+            request.Dto.Items.Select(x => new OrderItem
+            {
+                ProductId = x.ProductId,
+                Quantity = x.Quantity
+            }).ToArray(),
+            _currentUserService.Id,
+            DateTime.UtcNow
+            );
 
+        await _aggregateStore.SaveAsync(order, cancellationToken);
+        
         return order.Id;
     }
 }

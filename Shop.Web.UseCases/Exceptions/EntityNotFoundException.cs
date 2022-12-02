@@ -2,7 +2,7 @@
 
 public class EntityNotFoundException : Exception
 {
-    public EntityNotFoundException(int id, string entityType) : base($"Not found {entityType} with id = '{id}'")
+    public EntityNotFoundException(Guid id, string entityType) : base($"Not found {entityType} with id = '{id}'")
     {
     }
 }

@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shop.Web.Entities;
 
 namespace Shop.Web.DataAccess.Postgres.Configurations;
 
-public class ProductConfiguration : IEntityTypeConfiguration<Product>
+public class StoredEventConfiguration : IEntityTypeConfiguration<StoredEvent>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public void Configure(EntityTypeBuilder<StoredEvent> builder)
     {
-        builder.Property(x => x.Name)
+        builder.Property(x => x.Type)
             .IsRequired()
             .HasMaxLength(128);
     }

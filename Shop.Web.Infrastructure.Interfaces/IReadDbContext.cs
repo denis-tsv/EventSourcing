@@ -1,12 +1,12 @@
-﻿using Shop.Web.Entities;
+﻿using Shop.Models;
 
 namespace Shop.Web.Infrastructure.Interfaces;
 
 public interface IReadDbContext
 {
-    IQueryable<Order> Orders { get; }
+    IQueryable<OrderModel> Orders { get; }
 
-    IQueryable<Product> Products { get; }
+    IQueryable<ProductModel> Products { get; }
 
-    IQueryable<User> Users { get; }
+    IQueryable<UserModel> Users { get; }
 }

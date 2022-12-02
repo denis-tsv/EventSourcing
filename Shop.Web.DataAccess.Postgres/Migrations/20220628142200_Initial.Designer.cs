@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Shop.Web.DataAccess.Postgres;
@@ -11,9 +12,10 @@ using Shop.Web.DataAccess.Postgres;
 namespace Shop.Web.DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220628142200_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,32 +105,6 @@ namespace Shop.Web.DataAccess.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("4e80a596-02e7-4892-ac45-6cb8f01c0cf1"),
-                            AggregateId = new Guid("efa9a19c-a85b-41f5-af21-bb27776986aa"),
-                            CreatedAt = new DateTime(2022, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Data = "{\"Id\":\"efa9a19c-a85b-41f5-af21-bb27776986aa\",\"FirstName\":\"FirstName1\",\"LastName\":\"LastName1\"}",
-                            Type = "UserCreatedEvent"
-                        },
-                        new
-                        {
-                            Id = new Guid("88c44318-728e-4dbf-9e85-890a5367dbac"),
-                            AggregateId = new Guid("efa9a19c-a85b-41f5-af21-bb27776986ab"),
-                            CreatedAt = new DateTime(2022, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Data = "{\"Id\":\"efa9a19c-a85b-41f5-af21-bb27776986ab\",\"Name\":\"Product1\",\"Price\":1}",
-                            Type = "ProductCreatedEvent"
-                        },
-                        new
-                        {
-                            Id = new Guid("ebbfe1f8-8ff4-49c9-b49e-fd7754bc95e6"),
-                            AggregateId = new Guid("efa9a19c-a85b-41f5-af21-bb27776986ac"),
-                            CreatedAt = new DateTime(2022, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Data = "{\"Id\":\"efa9a19c-a85b-41f5-af21-bb27776986ac\",\"Name\":\"Product2\",\"Price\":20}",
-                            Type = "ProductCreatedEvent"
-                        });
                 });
 #pragma warning restore 612, 618
         }

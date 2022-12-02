@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shop.Models\Shop.Models.csproj" />
     <ProjectReference Include="..\Shop.Web.Entities\Shop.Web.Entities.csproj" />
   </ItemGroup>
 

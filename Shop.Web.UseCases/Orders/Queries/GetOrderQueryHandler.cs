@@ -23,7 +23,7 @@ public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, OrderDto>
     {
         var order = await _dbContext
             .Orders
-            .Include(x => x.Items)
+            //.Include(x => x.Items)
             .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (order == null) throw new EntityNotFoundException(request.Id, nameof(Order));

@@ -19,8 +19,8 @@ public class OrdersController : ControllerBase
         _sender = sender;
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetOrder([FromRoute] int id, CancellationToken token)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetOrder([FromRoute] Guid id, CancellationToken token)
     {
         var result = await _sender.Send(new GetOrderQuery { Id = id }, token);
         return Ok(result);
@@ -34,16 +34,16 @@ public class OrdersController : ControllerBase
         return Ok(id);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateOrder([FromRoute] int id, [FromBody] UpdateOrderDto dto, CancellationToken token)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateOrder([FromRoute] Guid id, [FromBody] UpdateOrderDto dto, CancellationToken token)
     {
         await _sender.Send(new UpdateOrderCommand { Id = id, Dto = dto }, token);
 
         return Ok();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteOrder([FromRoute] int id, CancellationToken token)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteOrder([FromRoute] Guid id, CancellationToken token)
     {
         await _sender.Send(new DeleteOrderCommand { Id = id  }, token);
 

@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Shop.Web.Entities;
+using Shop.Models;
 
 namespace Shop.Web.DataAccess.Postgres.Configurations;
 
-public class OrderConfiguration : IEntityTypeConfiguration<Order>
+public class OrderModelConfiguration : IEntityTypeConfiguration<OrderModel>
 {
-    public void Configure(EntityTypeBuilder<Order> builder)
+    public void Configure(EntityTypeBuilder<OrderModel> builder)
     {
 
     }

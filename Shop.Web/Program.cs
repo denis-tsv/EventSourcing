@@ -25,9 +25,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(CreateOrderCommand));
 builder.Services.AddAutoMapper(typeof(OrderProfile));
 
-builder.Services.AddDbContext<IDbContext, AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 builder.Services.AddDbContext<IReadDbContext, AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
+builder.Services.AddScoped<IAggregateStore, SqlAggregateStore>();
 builder.Services.AddSingleton<ICurrentUserService, TestCurrentUserService>();
 
 var app = builder.Build();

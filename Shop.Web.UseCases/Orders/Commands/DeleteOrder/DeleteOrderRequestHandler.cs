@@ -7,19 +7,21 @@ namespace Shop.Web.UseCases.Orders.Commands.DeleteOrder;
 
 public class DeleteOrderRequestHandler : AsyncRequestHandler<DeleteOrderCommand>
 {
-    private readonly IDbContext _dbContext;
+    private readonly IAggregateStore _aggregateStore;
 
-    public DeleteOrderRequestHandler(IDbContext dbContext)
+    public DeleteOrderRequestHandler(IAggregateStore aggregateStore)
     {
-        _dbContext = dbContext;
+        _aggregateStore = aggregateStore;
     }
 
     protected override async Task Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
-        _dbContext.Orders.Remove(new Order { Id = request.Id });
+        var order = await _aggregateStore.LoadAsync<Order>(request.Id, cancellationToken);
+        
+        if (order == null) throw new EntityNotFoundException(request.Id, nameof(Order));
 
-        var count = await _dbContext.SaveChangesAsync(cancellationToken);
+        order.Delete();
 
-        if (count == 0) throw new EntityNotFoundException(request.Id, nameof(Order));
+        await _aggregateStore.SaveAsync(order, cancellationToken);
     }
 }
